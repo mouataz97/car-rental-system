@@ -1,0 +1,18 @@
+{
+    "name": "elmouatazbillah/car-rental-system",
+    "description": "Car Rental Management System",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Elmouatazbillah\\CarRentalSystem\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "El Mouataz Billah Fachatti",
+            "email": "fachatti.mouataz.billah@gmail.com"
+        }
+    ],
+    "require": {}
+}

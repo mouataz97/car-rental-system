@@ -2,14 +2,13 @@
 
 namespace Elmouatazbillah\CarRentalSystem\Controllers;
 
+use Elmouatazbillah\CarRentalSystem\Models\Car;
 use Elmouatazbillah\CarRentalSystem\Core\Database;
-
 class CarsController
 {
     public function index()
     {
-        $db = Database::connect();
-        $cars = $db->query("SELECT * FROM cars")->fetchAll();
+        $cars = Car::all();
 
         \Elmouatazbillah\CarRentalSystem\Core\View::render(
             "cars/index",

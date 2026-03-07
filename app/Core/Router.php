@@ -2,6 +2,10 @@
 
 namespace Elmouatazbillah\CarRentalSystem\Core;
 
+$controllerNamespace = "Elmouatazbillah\\CarRentalSystem\\Controllers\\";
+
+$controllerClass = $controllerNamespace . $controllerName . "Controller";
+
 class Router
 {
     public function handle()
@@ -10,27 +14,30 @@ class Router
 
         $uri = trim($uri, '/');
 
-        if ($uri === '') {
-            $controllerName = "Home";
-        } else {
-            $controllerName = ucfirst($uri);
-        }
+        $parts = explode('/', $uri);
 
-        $controllerClass = "Elmouatazbillah\\CarRentalSystem\\Controllers\\" 
-                            . $controllerName . "Controller";
+        $controllerName = !empty($parts[0]) ? ucfirst($parts[0]) : 'Home';
+
+        $method = $parts[1] ?? 'index';
+
+        $controllerClass =
+            "Elmouatazbillah\\CarRentalSystem\\Controllers\\"
+            . $controllerName
+            . "Controller";
 
         if (!class_exists($controllerClass)) {
-            echo "Controller NOT Found ❌";
+            http_response_code(404);
+            echo "404 Page Not Found";
             return;
         }
 
         $controller = new $controllerClass();
 
-        if (!method_exists($controller, "index")) {
-            echo "Method index() missing ❌";
+        if (!method_exists($controller, $method)) {
+            echo "Method not found ❌";
             return;
         }
 
-        $controller->index();
+        $controller->$method();
     }
 }

@@ -1,6 +1,7 @@
 <h1>🚗 Cars List</h1>
 
-<a href="?url=cars&action=create">➕ Add Car</a>
+<a href="/car-rental-system/public/cars/create">Add New Car</a>
+<br><br>
 
 <table border="1" cellpadding="10">
     <tr>

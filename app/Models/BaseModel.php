@@ -1,6 +1,7 @@
 <?php
 
-namespace Elmouatazbillah\CarRentalSystem\Core;
+namespace Elmouatazbillah\CarRentalSystem\Models;
+use Elmouatazbillah\CarRentalSystem\Core\Database;
 
 class BaseModel
 {

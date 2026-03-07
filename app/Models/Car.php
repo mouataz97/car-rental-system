@@ -2,7 +2,8 @@
 
 namespace Elmouatazbillah\CarRentalSystem\Models;
 
-use Elmouatazbillah\CarRentalSystem\Core\BaseModel;
+use Elmouatazbillah\CarRentalSystem\Models\BaseModel;
+
 
 class Car extends BaseModel
 {

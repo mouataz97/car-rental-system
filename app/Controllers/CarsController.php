@@ -3,129 +3,54 @@
 namespace Elmouatazbillah\CarRentalSystem\Controllers;
 
 use Elmouatazbillah\CarRentalSystem\Models\Car;
-use Elmouatazbillah\CarRentalSystem\Core\Database;
+use Elmouatazbillah\CarRentalSystem\Core\View;
+
 class CarsController
 {
     public function index()
     {
         $cars = Car::all();
-
-        \Elmouatazbillah\CarRentalSystem\Core\View::render(
-            "cars/index",
-            ["cars" => $cars]
-        );
+        View::render('cars/index', ['cars' => $cars]);
     }
 
-    public function delete()
+    public function create()
     {
-        if (!isset($_GET['id'])) {
-            header("Location: ?url=cars");
-            exit;
-        }
-
-        $id = $_GET['id'];
-
-        $db = Database::connect();
-
-        $stmt = $db->prepare("DELETE FROM cars WHERE id = ?");
-        $stmt->execute([$id]);
-
-        header("Location: ?url=cars");
-        exit;
+        View::render('cars/create');
     }
 
     public function store()
     {
-        $db = Database::connect();
+        Car::create($_POST);
 
-        $stmt = $db->prepare("
-            INSERT INTO cars (brand, model, license_plate, price_per_day)
-            VALUES (?, ?, ?, ?)
-        ");
-
-        $stmt->execute([
-            $_POST['brand'],
-            $_POST['model'],
-            $_POST['license_plate'],
-            $_POST['price_per_day']
-        ]);
-
-        header("Location: ?url=cars");
+        header("Location: /car-rental-system/public/cars");
         exit;
     }
-    
+
     public function edit()
-{
-    if (!isset($_GET['id'])) {
-        header("Location: ?url=cars");
-        exit;
-    }
+    {
+        $id = $_GET['id'];
+        $car = Car::find($id);
 
-    $id = $_GET['id'];
-    $db = Database::connect();
-
-    $stmt = $db->prepare("SELECT * FROM cars WHERE id = ?");
-    $stmt->execute([$id]);
-    $car = $stmt->fetch();
-
-    if (!$car) {
-        echo "Car not found ❌";
-        return;
-    }
-
-    echo "<h2>Edit Car</h2>";
-
-    echo "
-    <form method='POST' action='?url=cars&action=update&id={$car['id']}'>
-
-        Brand:
-        <input type='text' name='brand' value='{$car['brand']}' required><br><br>
-
-        Model:
-        <input type='text' name='model' value='{$car['model']}' required><br><br>
-
-        License Plate:
-        <input type='text' name='license_plate' value='{$car['license_plate']}' required><br><br>
-
-        Price:
-        <input type='number' step='0.01' name='price_per_day'
-        value='{$car['price_per_day']}' required><br><br>
-
-        <button type='submit'>Update</button>
-
-    </form>
-    ";
+        View::render('cars/edit', ['car' => $car]);
     }
 
     public function update()
-{
-    if (!isset($_GET['id'])) {
-        header("Location: ?url=cars");
+    {
+        $id = $_POST['id'];
+
+        Car::update($id, $_POST);
+
+        header("Location: /car-rental-system/public/cars");
         exit;
     }
 
-    $id = $_GET['id'];
+    public function delete()
+    {
+        $id = $_GET['id'];
 
-    $db = Database::connect();
+        Car::delete($id);
 
-    $stmt = $db->prepare("
-        UPDATE cars
-        SET brand = ?,
-            model = ?,
-            license_plate = ?,
-            price_per_day = ?
-        WHERE id = ?
-    ");
-
-    $stmt->execute([
-        $_POST['brand'],
-        $_POST['model'],
-        $_POST['license_plate'],
-        $_POST['price_per_day'],
-        $id
-    ]);
-
-    header("Location: ?url=cars");
-    exit;
-}
+        header("Location: /car-rental-system/public/cars");
+        exit;
+    }
 }

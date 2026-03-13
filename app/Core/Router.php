@@ -2,42 +2,38 @@
 
 namespace Elmouatazbillah\CarRentalSystem\Core;
 
-$controllerNamespace = "Elmouatazbillah\\CarRentalSystem\\Controllers\\";
-
-$controllerClass = $controllerNamespace . $controllerName . "Controller";
-
 class Router
 {
+    private $routes = [];
+
+    public function get($uri, $action)
+    {
+        $this->routes['GET'][$uri] = $action;
+    }
+
+    public function post($uri, $action)
+    {
+        $this->routes['POST'][$uri] = $action;
+    }
+
     public function handle()
     {
         $uri = $_GET['url'] ?? '';
+        $method = $_SERVER['REQUEST_METHOD'];
 
-        $uri = trim($uri, '/');
-
-        $parts = explode('/', $uri);
-
-        $controllerName = !empty($parts[0]) ? ucfirst($parts[0]) : 'Home';
-
-        $method = $parts[1] ?? 'index';
-
-        $controllerClass =
-            "Elmouatazbillah\\CarRentalSystem\\Controllers\\"
-            . $controllerName
-            . "Controller";
-
-        if (!class_exists($controllerClass)) {
-            http_response_code(404);
-            echo "404 Page Not Found";
+        if (!isset($this->routes[$method][$uri])) {
+            echo "Route not found ❌";
             return;
         }
 
-        $controller = new $controllerClass();
+        $action = $this->routes[$method][$uri];
 
-        if (!method_exists($controller, $method)) {
-            echo "Method not found ❌";
-            return;
-        }
+        list($controller, $method) = explode('@', $action);
 
-        $controller->$method();
+        $controllerClass = "Elmouatazbillah\\CarRentalSystem\\Controllers\\" . $controller;
+
+        $controllerObject = new $controllerClass();
+
+        $controllerObject->$method();
     }
 }

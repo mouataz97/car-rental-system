@@ -1,27 +1,11 @@
-<h2>Add Car</h2>
-
 <form method="POST" action="/car-rental-system/public/cars/store">
 
-Brand:
-<input type="text" name="brand"><br><br>
+<input type="text" name="brand" placeholder="Brand">
 
-Model:
-<input type="text" name="model"><br><br>
+<input type="text" name="model" placeholder="Model">
 
-License Plate:
-<input type="text" name="license_plate"><br><br>
+<input type="number" name="price_per_day" placeholder="Price">
 
-Price Per Day:
-<input type="number" name="price_per_day"><br><br>
-
-Status:
-<select name="status">
-<option value="available">Available</option>
-<option value="rented">Rented</option>
-</select>
-
-<br><br>
-
-<button type="submit">Save Car</button>
+<button type="submit">Save</button>
 
 </form>

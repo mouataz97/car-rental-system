@@ -3,35 +3,40 @@
 namespace Elmouatazbillah\CarRentalSystem\Controllers;
 
 use Elmouatazbillah\CarRentalSystem\Models\Car;
-use Elmouatazbillah\CarRentalSystem\Core\View;
+use Elmouatazbillah\CarRentalSystem\Core\BaseController;
 
-class CarsController
+class CarsController extends BaseController
 {
     public function index()
     {
         $cars = Car::all();
-        View::render('cars/index', ['cars' => $cars]);
+
+        $this->view('cars/index', [
+            'cars' => $cars
+        ]);
     }
 
     public function create()
     {
-        View::render('cars/create');
+        $this->view('cars/create');
     }
 
     public function store()
     {
         Car::create($_POST);
 
-        header("Location: /car-rental-system/public/cars");
-        exit;
+        $this->redirect('/car-rental-system/public/cars');
     }
 
     public function edit()
     {
         $id = $_GET['id'];
+
         $car = Car::find($id);
 
-        View::render('cars/edit', ['car' => $car]);
+        $this->view('cars/edit', [
+            'car' => $car
+        ]);
     }
 
     public function update()
@@ -40,8 +45,7 @@ class CarsController
 
         Car::update($id, $_POST);
 
-        header("Location: /car-rental-system/public/cars");
-        exit;
+        $this->redirect('/car-rental-system/public/cars');
     }
 
     public function delete()
@@ -50,7 +54,6 @@ class CarsController
 
         Car::delete($id);
 
-        header("Location: /car-rental-system/public/cars");
-        exit;
+        $this->redirect('/car-rental-system/public/cars');
     }
 }

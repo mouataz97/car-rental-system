@@ -10,10 +10,13 @@ class View
 
         $viewPath = __DIR__ . "/../Views/" . $view . ".php";
 
-        if (file_exists($viewPath)) {
-            require $viewPath;
-        } else {
+        $layoutPath = __DIR__ . "/../Views/layouts/main.php";
+
+        if (!file_exists($viewPath)) {
             echo "View not found ❌";
+            return;
         }
+
+        require $layoutPath;
     }
 }
